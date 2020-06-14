@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "rust_text_editor",
+    "test_app"
+]

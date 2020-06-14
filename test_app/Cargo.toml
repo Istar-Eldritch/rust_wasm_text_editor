@@ -1,0 +1,15 @@
+[package]
+name = "test_app"
+version = "0.1.0"
+authors = ["Ruben Paz <me@ruben.io>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rust_text_editor = { path = "../rust_text_editor" }
+yew = "0.16.2"
+wasm-bindgen = "0.2.63"
