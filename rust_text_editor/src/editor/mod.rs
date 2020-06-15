@@ -69,11 +69,12 @@ impl Component for Editor {
 
                 match k {
                     // Appends characters to the content
-                    KeyboardKey::Printable(ch) => {
+                    KeyboardKey::Printable(mut ch) => {
                         let line: &mut String =
                             self.content.get_mut(self.cursor_position.line).unwrap();
 
-                        line.push_str(&ch);
+                        let ch = ch.pop().unwrap();
+                        line.insert(self.cursor_position.column, ch);
                         self.cursor_position.column += 1;
                         console::log(&format!("{:?}", self.content));
                         true
@@ -89,18 +90,15 @@ impl Component for Editor {
                             line.remove(self.cursor_position.column);
                             true
                         // If we are not in the first line and in the first character
-                        // - Remove the previous line newline character
                         // - Concatenate the current line to the previous one
                         // - Remove the current line from the state
                         // - Update position to previous line to where the concatenation happened
                         } else if self.cursor_position.line > 0 {
                             let current_line =
                                 self.content.get(self.cursor_position.line).unwrap().clone();
-                            // Remove the new line character from the previuos line
                             let previous_line =
                                 self.content.get_mut(self.cursor_position.line - 1).unwrap();
 
-                            previous_line.remove(previous_line.len() - 1);
                             self.cursor_position.column = previous_line.len();
                             previous_line.push_str(&current_line);
                             self.content.remove(self.cursor_position.line);
@@ -112,13 +110,79 @@ impl Component for Editor {
                     }
                     // Adds new lines
                     KeyboardKey::Enter => {
-                        let current_line = self.content.get_mut(self.cursor_position.line).unwrap();
-                        current_line.push('\n');
-                        let new_line = String::new();
+                        let mut new_line = String::new();
+                        let existing_line =
+                            self.content.get_mut(self.cursor_position.line).unwrap();
+                        new_line.push_str(
+                            &existing_line[self.cursor_position.column..existing_line.len()],
+                        );
+                        *existing_line =
+                            String::from(&existing_line[0..self.cursor_position.column]);
                         self.content.push(new_line);
                         self.cursor_position.line += 1;
                         self.cursor_position.column = 0;
                         true
+                    }
+                    KeyboardKey::ArrowLeft => {
+                        if self.cursor_position.column > 0 {
+                            self.cursor_position.column -= 1;
+                            true
+                        } else if self.cursor_position.line > 0 {
+                            let pre_line = self.content.get(self.cursor_position.line - 1).unwrap();
+                            self.cursor_position.column = pre_line.len();
+                            self.cursor_position.line -= 1;
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    KeyboardKey::ArrowRight => {
+                        let line = self.content.get(self.cursor_position.line).unwrap();
+                        if self.cursor_position.column < line.len() {
+                            self.cursor_position.column += 1;
+                            true
+                        } else if self.cursor_position.column == line.len()
+                            && self.content.len() > self.cursor_position.line + 1
+                        {
+                            self.cursor_position.line += 1;
+                            self.cursor_position.column = 0;
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    KeyboardKey::ArrowUp => {
+                        if self.cursor_position.line > 0 {
+                            self.cursor_position.line -= 1;
+                            let pre_line = self.content.get(self.cursor_position.line).unwrap();
+                            if pre_line.len() < self.cursor_position.column {
+                                self.cursor_position.column = pre_line.len();
+                            }
+                            true
+                        } else if self.cursor_position.column > 0 {
+                            self.cursor_position.column = 0;
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    KeyboardKey::ArrowDown => {
+                        if self.cursor_position.line + 1 < self.content.len() {
+                            self.cursor_position.line += 1;
+                            let next_line = self.content.get(self.cursor_position.line).unwrap();
+                            if next_line.len() < self.cursor_position.column {
+                                self.cursor_position.column = next_line.len();
+                            }
+                            true
+                        } else {
+                            let line = self.content.get(self.cursor_position.line).unwrap();
+                            if self.cursor_position.column < line.len() {
+                                self.cursor_position.column = line.len();
+                                true
+                            } else {
+                                false
+                            }
+                        }
                     }
                     _ => false, /* Ignore key press */
                 }
