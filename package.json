@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "parcel-bundler": "1.12.4",
-    "parcel-plugin-wasm.rs": "1.2.16"
+    "parcel-plugin-wasm.rs": "1.2.16",
+    "tailwindcss": "1.4.6"
   },
   "dependencies": {
     "src": "1.1.2"
