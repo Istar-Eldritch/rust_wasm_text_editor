@@ -29,6 +29,8 @@ impl Component for App {
 
 #[wasm_bindgen]
 pub fn run_app() -> Result<(), JsValue> {
+    console_log::init_with_level(log::Level::Trace).expect("Error initializing log system");
+    log::info!("App started");
     yew::start_app::<App>();
     Ok(())
 }

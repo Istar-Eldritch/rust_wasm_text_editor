@@ -1,6 +1,5 @@
 use super::cursor::Cursor;
 use super::Position;
-use crate::console;
 use serde::Deserialize;
 use web_sys::KeyboardEvent;
 use yew::html::ChildrenRenderer;
@@ -12,7 +11,7 @@ pub struct Editor {
     cursor_position: Position,
     content: Vec<String>,
 }
-
+#[derive(Debug)]
 pub enum EditorMsg {
     KeyPressed(KeyboardKey),
     Error,
@@ -63,10 +62,10 @@ impl Component for Editor {
     }
 
     fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        log::trace!("msg: {:?}", msg);
+
         match msg {
             EditorMsg::KeyPressed(k) => {
-                console::log(&format!("Pressed: {:?}", k));
-
                 match k {
                     // Appends characters to the content
                     KeyboardKey::Printable(mut ch) => {
@@ -76,7 +75,6 @@ impl Component for Editor {
                         let ch = ch.pop().unwrap();
                         line.insert(self.cursor_position.column, ch);
                         self.cursor_position.column += 1;
-                        console::log(&format!("{:?}", self.content));
                         true
                     }
                     // Removes characters from the content
@@ -202,7 +200,7 @@ impl Component for Editor {
         let content = ChildrenRenderer::new(content);
         html! {
             <div
-                class="editor"
+                class="h-full w-full bg-gray-200"
                 tabindex=1
                 ref=self.node_ref.clone()
                 onkeydown=self.link.callback(|e: KeyboardEvent| {

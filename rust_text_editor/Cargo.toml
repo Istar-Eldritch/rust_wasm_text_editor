@@ -18,3 +18,4 @@ thiserror = "1.0.19"
 serde = {version = "1.0.111", features = ["derive"] }
 serde_plain = "0.3.0"
 yew = "0.16.2"
+log = "0.4.8"

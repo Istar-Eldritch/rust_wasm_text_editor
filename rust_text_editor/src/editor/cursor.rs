@@ -10,6 +10,7 @@ pub struct Cursor {
     visible: bool,
 }
 
+#[derive(Debug)]
 pub enum CursorMsg {
     Blink,
 }
@@ -38,8 +39,14 @@ impl Component for Cursor {
             visible: props.visible,
         }
     }
-    fn update(&mut self, _: Self::Message) -> ShouldRender {
-        todo!()
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
+        log::trace!("msg: {:?}", msg);
+        if self.blinking {
+            self.visible = !self.visible
+        } else {
+            self.visible = true
+        }
+        true
     }
     fn change(&mut self, props: Self::Properties) -> ShouldRender {
         self.position = props.position;
@@ -49,8 +56,15 @@ impl Component for Cursor {
         true
     }
     fn view(&self) -> Html {
+        let mut class_names = String::from("absolute bg-gray-900 w-1 h-4");
+        let visibility_class = if self.visible {
+            " visible"
+        } else {
+            " invisible"
+        };
+        class_names.push_str(visibility_class);
         html! {
-            <div class="cursor"></div>
+            <div class=class_names/>
         }
     }
 }
