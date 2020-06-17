@@ -261,7 +261,7 @@ impl Component for Editor {
         html! {
             <div class="h-full w-full bg-gray-200 p-3">
                 <div
-                    class="h-full w-full"
+                    class="h-full w-full outline-none"
                     tabindex=1
                     onkeydown=self.link.callback(|e: KeyboardEvent| {
                         e.prevent_default();
