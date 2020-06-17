@@ -1,5 +1,5 @@
 // mod editor_content;
-mod cursor;
+mod caret;
 mod editor;
 
 pub use editor::Editor;
@@ -20,7 +20,7 @@ pub use editor::Editor;
 //     }
 // }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Default)]
 pub struct Position {
     line: usize,
     column: usize,
