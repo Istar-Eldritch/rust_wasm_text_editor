@@ -195,12 +195,12 @@ impl Component for Editor {
         let content: Vec<Html> = self
             .content
             .iter()
-            .map(|line| html! {<div class="line">{{line}}</div>})
+            .map(|line| html! {<p class="leading-tight">{{line}}</p>})
             .collect();
         let content = ChildrenRenderer::new(content);
         html! {
             <div
-                class="h-full w-full bg-gray-200"
+                class="h-full w-full bg-gray-200 p-3"
                 tabindex=1
                 ref=self.node_ref.clone()
                 onkeydown=self.link.callback(|e: KeyboardEvent| {

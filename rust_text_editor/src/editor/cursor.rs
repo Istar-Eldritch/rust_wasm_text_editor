@@ -56,7 +56,7 @@ impl Component for Cursor {
         true
     }
     fn view(&self) -> Html {
-        let mut class_names = String::from("absolute bg-gray-900 w-1 h-4");
+        let mut class_names = String::from("absolute bg-gray-900 w-px-2 h-4");
         let visibility_class = if self.visible {
             " visible"
         } else {

@@ -22,7 +22,12 @@ impl Component for App {
 
     fn view(&self) -> Html {
         html! {
-            <Editor></Editor>
+            <div class="flex flex-col h-full p-20">
+                <h3 class="">{"Editor:"}</h3>
+                <div class="flex-grow mt-4">
+                    <Editor/>
+                </div>
+            </div>
         }
     }
 }
