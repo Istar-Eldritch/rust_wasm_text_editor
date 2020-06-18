@@ -131,7 +131,7 @@ impl Component for Editor {
                         );
                         *existing_line =
                             String::from(&existing_line[0..self.caret_position.column]);
-                        self.content.push(new_line);
+                        self.content.insert(self.caret_position.line + 1, new_line);
                         self.caret_position.line += 1;
                         self.caret_position.column = 0;
                         true
