@@ -1,7 +1,6 @@
 use rust_text_editor::editor::Editor;
 use wasm_bindgen::prelude::*;
 use yew::prelude::*;
-
 pub struct App {}
 
 impl Component for App {

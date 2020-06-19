@@ -11,7 +11,7 @@ crate-type = ["cdylib", "lib"]
 
 [dependencies]
 wasm-bindgen = { version = "0.2.63", features = ["serde-serialize"] }
-web-sys = { version = "0.3.40", features = ["HtmlElement", "DomRect", "CssStyleDeclaration", "Element", "Window", "HtmlCanvasElement", "CanvasRenderingContext2d", "TextMetrics"] }
+web-sys = { version = "0.3.40", features = ["HtmlElement", "DomRect", "CssStyleDeclaration", "Element", "Window", "HtmlCanvasElement", "CanvasRenderingContext2d", "TextMetrics", "Navigator", "Clipboard"] }
 wasm-bindgen-futures = "0.4.13"
 js-sys = "0.3.40"
 thiserror = "1.0.19"
